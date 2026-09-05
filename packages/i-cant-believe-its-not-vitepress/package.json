@@ -1,6 +1,6 @@
 {
   "name": "i-cant-believe-its-not-vitepress",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Starlight theme that looks and lays out like VitePress \u2014 sidebar, content and table of contents kept together in one centred column.",
   "keywords": [
     "astro",
@@ -9,7 +9,8 @@
     "withastro",
     "vitepress",
     "documentation",
-    "theme"
+    "theme",
+    "vibe-coded"
   ],
   "license": "MIT",
   "author": "KTibow",
