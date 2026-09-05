@@ -12,6 +12,7 @@ export default defineConfig({
 			title: "I Can't Believe It's Not VitePress",
 			description:
 				'A Starlight theme that looks and lays out like VitePress, with the table of contents kept next to the text.',
+			routeMiddleware: './src/routeData.ts',
 			plugins: [
 				vitepress(),
 				/*
