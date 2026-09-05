@@ -1,0 +1,118 @@
+---
+/*
+ * VitePress nav bar.
+ *
+ * Two columns: a title column exactly as wide as the sidebar, then everything
+ * else. Search is pinned to the left of that second column (`margin-inline-end:
+ * auto`) so it starts where the prose starts, and the controls collect at the
+ * far right with hairline separators between clusters — VitePress's arrangement
+ * rather than Starlight's centred search box.
+ *
+ * The bar's split background and its two-part bottom rule live in `PageFrame`,
+ * which owns the element this sits inside.
+ */
+import config from 'virtual:starlight/user-config';
+
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import Search from 'virtual:starlight/components/Search';
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+
+/**
+ * Render the `Search` component if Pagefind is enabled or the default search component has been overridden.
+ */
+const shouldRenderSearch =
+	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+---
+
+<div class="header">
+	<div class="title-wrapper sl-flex">
+		<SiteTitle />
+	</div>
+	<div class="content sl-flex">
+		{
+			shouldRenderSearch && (
+				<div class="search sl-flex print:hidden">
+					<Search />
+				</div>
+			)
+		}
+		<div class="sl-hidden md:sl-flex print:hidden right-group">
+			<div class="sl-flex social-icons">
+				<SocialIcons />
+			</div>
+			<div class="sl-flex controls">
+				<ThemeSelect />
+				<LanguageSelect />
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	@layer starlight.core {
+		.header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: var(--sl-nav-gap);
+			height: 100%;
+		}
+
+		.title-wrapper {
+			/* Prevent long titles overflowing and covering the search and menu buttons. */
+			overflow: clip;
+			/* Avoid clipping the focus ring around the link inside. */
+			padding: 0.25rem;
+			margin: -0.25rem;
+			min-width: 0;
+		}
+
+		.content {
+			flex: 1;
+			min-width: 0;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 0.5rem;
+		}
+
+		.right-group,
+		.social-icons,
+		.controls {
+			align-items: center;
+			gap: 0.5rem;
+		}
+		.right-group {
+			gap: 0.75rem;
+		}
+		.social-icons {
+			gap: 0.25rem;
+		}
+
+		/* Hairline between the social links and the preference controls. */
+		.social-icons:not(:empty) + .controls::before {
+			content: '';
+			margin-inline-end: 0.25rem;
+			width: 1px;
+			height: 1.5rem;
+			background-color: var(--sl-color-hairline);
+		}
+
+		@media (min-width: 50rem) {
+			/*
+			 * The title column is the sidebar column, so the search box always begins
+			 * where the prose begins, on every page.
+			 */
+			:global([data-has-sidebar]) .title-wrapper {
+				flex: 0 0 calc(var(--sl-sidebar-width) - var(--sl-nav-pad-x));
+				max-width: calc(var(--sl-sidebar-width) - var(--sl-nav-pad-x));
+			}
+			.search {
+				flex: 1;
+				min-width: 0;
+				margin-inline-end: auto;
+			}
+		}
+	}
+</style>

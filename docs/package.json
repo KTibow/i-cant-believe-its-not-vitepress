@@ -1,0 +1,22 @@
+{
+  "name": "docs",
+  "type": "module",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.0",
+    "astro": "^7.2.10",
+    "i-cant-believe-its-not-vitepress": "workspace:*",
+    "sharp": "^0.34.0",
+    "starlight-page-actions": "^0.7.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

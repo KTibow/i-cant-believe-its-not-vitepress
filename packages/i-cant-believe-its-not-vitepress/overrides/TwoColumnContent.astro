@@ -1,0 +1,68 @@
+---
+/*
+ * Content + table of contents.
+ *
+ * Starlight sizes the right rail as a share of the leftover viewport, so on a
+ * wide screen the contents list drifts off to the far edge. Here it is a fixed
+ * `--vp-toc-width` column separated from the prose by `--vp-toc-gap`, and it
+ * sticks to the nav bar rather than being taken out of flow — so it is always
+ * exactly one gap away from the text it describes.
+ */
+---
+
+<div class="lg:sl-flex vp-doc-layout">
+	{
+		Astro.locals.starlightRoute.toc && (
+			<aside class="right-sidebar-container print:hidden">
+				<div class="right-sidebar">
+					<slot name="right-sidebar" />
+				</div>
+			</aside>
+		)
+	}
+	<div class="main-pane"><slot /></div>
+</div>
+
+<style>
+	@layer starlight.core {
+		.main-pane {
+			isolation: isolate;
+		}
+
+		@media (min-width: 72rem) {
+			.vp-doc-layout {
+				/* Content-height items, so the rail has room to stick within the row. */
+				align-items: flex-start;
+				/*
+				 * Prose and rail are sized to their content and the pair is centred, so
+				 * the gap between them never grows with the window. Starlight instead
+				 * gives the prose all the leftover room and centres the text inside it,
+				 * which is what pushes the contents list away on a wide screen.
+				 */
+				justify-content: center;
+				gap: var(--vp-toc-gap);
+			}
+
+			.right-sidebar-container {
+				order: 2;
+				flex: 0 0 var(--vp-toc-width);
+				position: sticky;
+				top: var(--sl-nav-height);
+				max-height: calc(100vh - var(--sl-nav-height));
+				overflow-y: auto;
+				overscroll-behavior: contain;
+				scrollbar-width: none;
+			}
+			.right-sidebar-container::-webkit-scrollbar {
+				display: none;
+			}
+
+			.main-pane {
+				order: 1;
+				flex: 1 1 auto;
+				min-width: 0;
+				max-width: calc(var(--sl-content-width) + 2 * var(--sl-content-pad-x));
+			}
+		}
+	}
+</style>

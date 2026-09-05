@@ -1,0 +1,10 @@
+{
+  "name": "i-cant-believe-its-not-vitepress-workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter docs dev",
+    "build": "pnpm --filter docs build",
+    "preview": "pnpm --filter docs preview"
+  }
+}

@@ -1,0 +1,201 @@
+---
+title: Kitchen sink
+description: Every element the theme styles, on one long page, so the contents rail has something to track.
+---
+
+import { Aside, Badge, Card, CardGrid, Steps, Tabs, TabItem, FileTree, LinkCard } from '@astrojs/starlight/components';
+
+This page exists to be scrolled. It runs long on purpose so the contents rail on the right has
+something to track, and it uses every element the theme styles.
+
+## Prose
+
+Body text is Inter at 16 px on a 1.7 line height, in a column capped at 45 rem — wide enough for a
+comfortable measure, narrow enough that your eye finds the start of the next line without effort.
+Links inside prose are [underlined and medium weight](/guide/what-is-this/), the way VitePress does
+it, because an underline survives being printed, being colour-blind, and being on a bad monitor.
+
+Inline `code` is brand-coloured on a soft tint. **Bold text** is 600, not 700, so it sits beside the
+headings instead of shouting past them. *Italics* come from the real italic cut of the variable
+font rather than a synthesised slant.
+
+> A blockquote is a two pixel rule and muted text. It should read as an aside from the author, not
+> as a callout — those come later and they look quite different on purpose.
+
+### Nesting
+
+Every heading level below the page title has its own size, and only `h2` gets the horizontal rule
+above it. That single rule does most of the work of making a long page feel sectioned.
+
+#### Fourth level
+
+At this depth the type is barely larger than body text, which is correct: if you need six heading
+levels, the document wants splitting, not a bigger `h6`.
+
+## Lists
+
+- Unordered items sit close together
+- Until one of them contains a paragraph
+
+  Like this one, at which point every sibling gets the same breathing room so the list does not look
+  half-collapsed.
+
+- And back to close spacing afterwards
+
+1. Ordered lists behave the same way
+2. With the marker aligned to the text above it
+3. Down as many items as you need
+
+## Tables
+
+Tables get a full border and zebra striping, both lifted from VitePress. The header row is muted and
+sits on the soft background rather than being bold and black.
+
+| Token | Default | Applies to |
+| --- | --- | --- |
+| `--vp-layout-max-width` | `88rem` | The whole layout |
+| `--sl-sidebar-width` | `17rem` | Navigation |
+| `--sl-content-width` | `45rem` | Prose |
+| `--vp-toc-width` | `14rem` | Contents rail |
+| `--vp-toc-gap` | `2rem` | Gap between prose and rail |
+| `--sl-nav-height` | `4rem` | Header |
+
+## Callouts
+
+Starlight's asides are restyled as VitePress custom blocks — a soft tinted box with a rounded
+corner, rather than a coloured rule down one side.
+
+<Aside type="note">The default. Neutral grey, for context that is worth setting apart but is not a warning.</Aside>
+
+<Aside type="tip" title="Worth knowing">Brand-tinted. Use it for the shortcut that saves someone ten minutes.</Aside>
+
+<Aside type="caution">Amber. Something here will bite if you are not paying attention.</Aside>
+
+<Aside type="danger">Red. Data loss, security, or a decision you cannot walk back.</Aside>
+
+## Code
+
+Code blocks use `github-light` and `github-dark`, VitePress's own Shiki themes, in an eight pixel
+frame with no border.
+
+```ts title="src/plugin.ts" {6-9}
+import type { StarlightPlugin } from '@astrojs/starlight/types';
+
+export default function vitepress(): StarlightPlugin {
+  return {
+    name: 'i-cant-believe-its-not-vitepress',
+    hooks: {
+      'config:setup'({ updateConfig }) {
+        updateConfig({ customCss: ['.../theme.css'] });
+      },
+    },
+  };
+}
+```
+
+Terminal frames are detected from the language and get their own chrome:
+
+```sh
+pnpm add i-cant-believe-its-not-vitepress
+```
+
+Tabbed code works too:
+
+<Tabs syncKey="pkg">
+<TabItem label="pnpm">
+
+```sh
+pnpm add i-cant-believe-its-not-vitepress
+```
+
+</TabItem>
+<TabItem label="npm">
+
+```sh
+npm install i-cant-believe-its-not-vitepress
+```
+
+</TabItem>
+<TabItem label="bun">
+
+```sh
+bun add i-cant-believe-its-not-vitepress
+```
+
+</TabItem>
+</Tabs>
+
+## Components
+
+<CardGrid>
+	<Card title="Cards" icon="open-book">
+		Card borders, radii and titles all follow the palette, so they need no styling of their own.
+	</Card>
+	<Card title="Badges" icon="star">
+		Inline <Badge text="new" variant="tip" /> and <Badge text="deprecated" variant="caution" />
+		markers pick up the VitePress colour ramps.
+	</Card>
+</CardGrid>
+
+<Steps>
+
+1. Install the package.
+
+2. Add `vitepress()` to your Starlight `plugins`.
+
+3. There is no step three.
+
+</Steps>
+
+<FileTree>
+
+- astro.config.mjs
+- src
+  - content
+    - docs
+      - index.mdx
+  - styles
+    - **custom.css** your overrides go here
+
+</FileTree>
+
+<LinkCard title="Styling reference" description="The custom properties worth knowing about." href="/reference/styling/" />
+
+## A long tail
+
+The rest of this page is filler with real headings, so that scrolling actually moves the marker in
+the contents rail and you can see it track.
+
+### Why the band is capped
+
+An uncapped layout optimises for filling the window. A capped one optimises for the distance your
+eye and your hand have to travel. Documentation is read in short bursts between edits, so travel
+cost dominates.
+
+### Why the contents list sits close
+
+A contents list pinned to the right edge of a wide monitor is functionally a different page. Keeping
+it one gap from the text means it can be used as a scroll bar for meaning rather than as a
+destination.
+
+### Why the sidebar has no border
+
+VitePress separates the navigation from the page with a very slightly different background instead
+of a rule. At this scale a one pixel line reads as a wall; a two percent shift in luminance reads as
+a surface.
+
+### Why headings are small
+
+Starlight's default `h1` is 42 pixels. VitePress's is 28. On a documentation page the title is not
+competing for attention with anything, so the extra size buys nothing and costs vertical space above
+the fold.
+
+### Why links are underlined
+
+Because colour alone is not an affordance, and because the underline offset in Inter is generous
+enough that it does not collide with descenders.
+
+### Why Inter
+
+It has a real italic, a variable weight axis, an optical sizing axis, and tabular figures. It is
+also what VitePress uses, which — given the name on the tin — settles it.

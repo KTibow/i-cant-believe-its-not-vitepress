@@ -1,0 +1,11 @@
+/*
+ * Inter, self-hosted, as a single variable file per subset with the optical
+ * sizing axis intact — the same face VitePress ships. `font-optical-sizing` is
+ * `auto` by default, so small text automatically picks up the wider, taller
+ * `opsz` cut without any extra declarations.
+ *
+ * Only the subsets a page actually uses are downloaded (latin is ~72 kB).
+ * Opt out with `fonts: false` and Starlight's system stack takes over.
+ */
+@import '@fontsource-variable/inter/opsz.css';
+@import '@fontsource-variable/inter/opsz-italic.css';

@@ -1,0 +1,35 @@
+---
+title: I Can't Believe It's Not VitePress
+description: A Starlight theme that looks and lays out like VitePress, with the contents list kept next to the text.
+template: splash
+hero:
+  tagline: Starlight, wearing VitePress's clothes. One centred column, Inter, and a table of contents that stays within reach of the words it describes.
+  actions:
+    - text: Get started
+      link: /guide/getting-started/
+      icon: right-arrow
+    - text: What is this?
+      link: /guide/what-is-this/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="One band, centred" icon="laptop">
+		Sidebar, prose and contents are capped at a single width and centred. Widen the window past
+		that and the slack goes to the margins, not between the columns.
+	</Card>
+	<Card title="No override layer" icon="setting">
+		Starlight is written against `--sl-*` tokens. The theme re-points those instead of stacking a
+		second stylesheet on top of the first.
+	</Card>
+	<Card title="Inter, self-hosted" icon="pencil">
+		The variable cut with the optical sizing axis intact, exactly as VitePress ships it. Only the
+		subsets a page actually uses get downloaded.
+	</Card>
+	<Card title="Three components" icon="puzzle">
+		Only the page frame, the two-column split and the contents rail are replaced — and they
+		replace Starlight's CSS rather than adding to it.
+	</Card>
+</CardGrid>

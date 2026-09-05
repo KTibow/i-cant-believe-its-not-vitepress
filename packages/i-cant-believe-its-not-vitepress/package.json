@@ -1,0 +1,42 @@
+{
+  "name": "i-cant-believe-its-not-vitepress",
+  "version": "0.1.0",
+  "description": "A Starlight theme that looks and lays out like VitePress \u2014 sidebar, content and table of contents kept together in one centred column.",
+  "keywords": [
+    "astro",
+    "starlight",
+    "starlight-theme",
+    "withastro",
+    "vitepress",
+    "documentation",
+    "theme"
+  ],
+  "license": "MIT",
+  "author": "KTibow",
+  "homepage": "https://github.com/KTibow/i-cant-believe-its-not-vitepress#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KTibow/i-cant-believe-its-not-vitepress.git",
+    "directory": "packages/i-cant-believe-its-not-vitepress"
+  },
+  "bugs": "https://github.com/KTibow/i-cant-believe-its-not-vitepress/issues",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./overrides/*": "./overrides/*",
+    "./styles/*": "./styles/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.ts",
+    "overrides",
+    "styles"
+  ],
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": ">=0.36.0",
+    "astro": ">=5.5.0"
+  }
+}

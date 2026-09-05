@@ -1,0 +1,187 @@
+---
+/*
+ * VitePress page frame.
+ *
+ * Structurally this is Starlight's own PageFrame — same elements, same popover
+ * id, same focus trap — with the geometry changed so that the header, the
+ * sidebar and the main frame all line up inside one centred band capped at
+ * `--vp-layout-max-width`. Past that width the extra space becomes padding on
+ * the outside of the band rather than gap between the columns, which is what
+ * keeps the nav, the prose and the table of contents within a mouse-flick of
+ * each other on a wide display.
+ */
+import MobileMenuToggle from 'virtual:starlight/components/MobileMenuToggle';
+
+const { hasSidebar } = Astro.locals.starlightRoute;
+---
+
+<div class="page sl-flex">
+	<header class="header">
+		<div class="header-inner"><slot name="header" /></div>
+	</header>
+	{
+		hasSidebar && (
+			<nav class="sidebar print:hidden" aria-label={Astro.locals.t('sidebarNav.accessibleLabel')}>
+				<MobileMenuToggle />
+				<script>
+					// The mobile menu uses the popover API to open and close without JavaScript. We enhance
+					// this behaviour with focus trapping while the menu is open.
+					class StarlightSidebarPane extends HTMLElement {
+						constructor() {
+							super();
+
+							// Close the menu when the viewport is resized between mobile and desktop sizes.
+							matchMedia('(min-width: 50em)').addEventListener('change', () => this.hidePopover());
+
+							// Update the menu state when the sidebar popover is toggled.
+							this.addEventListener('toggle', ({ newState }) => this.trapFocus(newState === 'open'));
+						}
+						/** Trap keyboard focus inside the header and menu when the menu is expanded. */
+						trapFocus(shouldTrap: boolean) {
+							document.querySelectorAll<HTMLElement>('.main-frame, .sl-skip-link').forEach((el) => {
+								el.toggleAttribute('inert', shouldTrap);
+							});
+						}
+					}
+					customElements.define('sl-sidebar-pane', StarlightSidebarPane);
+				</script>
+				<sl-sidebar-pane popover="" id="starlight__sidebar" class="sidebar-pane">
+					<div class="sidebar-content sl-flex">
+						<slot name="sidebar" />
+					</div>
+				</sl-sidebar-pane>
+			</nav>
+		)
+	}
+	<div class="main-frame"><slot /></div>
+</div>
+
+<style>
+	@layer starlight.core {
+		.page {
+			flex-direction: column;
+			min-height: 100vh;
+			background-color: var(--sl-color-bg);
+		}
+
+		/*
+		 * VitePress does not paint one bar across the top. Over the sidebar column the
+		 * nav row carries the *sidebar's* surface, and only to the right of that column
+		 * does the nav's own surface begin — which is why the top-left corner of a
+		 * VitePress page reads as one continuous panel with the navigation below it.
+		 *
+		 * `--vp-nav-col-offset` is where that seam falls. The element's own background
+		 * paints the sidebar side; `::before` paints the nav side from the seam
+		 * rightwards.
+		 */
+		.header {
+			--vp-nav-col-offset: 0px;
+			z-index: var(--sl-z-index-navbar);
+			position: fixed;
+			inset-inline-start: 0;
+			inset-block-start: 0;
+			width: 100%;
+			height: var(--sl-nav-height);
+			padding-inline: var(--sl-nav-pad-x);
+			background-color: var(--sl-color-bg-sidebar);
+		}
+		.header::before {
+			content: '';
+			position: absolute;
+			inset-block: 0;
+			inset-inline: var(--vp-nav-col-offset) 0;
+			z-index: -1;
+			background-color: var(--sl-color-bg-nav);
+		}
+		/* The bottom rule, likewise only from the seam rightwards. */
+		.header::after {
+			content: '';
+			position: absolute;
+			inset-block-start: 100%;
+			inset-inline: var(--vp-nav-col-offset) 0;
+			height: 1px;
+			background-color: var(--vp-c-divider);
+		}
+
+		/*
+		 * The bar spans the viewport but its contents are pinned to the band, so the
+		 * site title sits directly above the sidebar and the search box above the prose.
+		 */
+		.header-inner {
+			position: relative;
+			height: 100%;
+			max-width: calc(var(--vp-layout-max-width) - 2 * var(--sl-nav-pad-x));
+			margin-inline: auto;
+		}
+
+		:global([data-has-sidebar]) .header {
+			padding-inline-end: calc(
+				var(--sl-nav-gap) + var(--sl-nav-pad-x) + var(--sl-menu-button-size)
+			);
+		}
+
+		.sidebar-pane {
+			/* By default, user agents apply some opinionated styles to popovers, which we don’t want. */
+			border: unset;
+			padding: unset;
+			height: unset;
+			color: unset;
+
+			position: fixed;
+			z-index: var(--sl-z-index-menu);
+			inset-block: var(--sl-nav-height) 0;
+			inset-inline-start: 0;
+			width: 100%;
+			background-color: var(--sl-color-bg-sidebar);
+			overflow-y: auto;
+			scrollbar-gutter: stable;
+		}
+
+		.sidebar-content {
+			height: 100%;
+			min-height: max-content;
+			padding: 1.5rem var(--sl-sidebar-pad-x) 4rem;
+			flex-direction: column;
+			gap: 1rem;
+		}
+
+		.main-frame {
+			padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
+			padding-inline: var(--vp-band-extra);
+		}
+
+		@media (min-width: 50rem) {
+			:global([data-has-sidebar]) .header {
+				--vp-nav-col-offset: calc(var(--vp-band-extra) + var(--sl-sidebar-width));
+				padding-inline-end: var(--sl-nav-pad-x);
+			}
+			/*
+			 * Over the sidebar column the rule is inset to the column's text width, so
+			 * it lines up with the dividers between sidebar groups instead of running
+			 * into the edge of the screen.
+			 */
+			:global([data-has-sidebar]) .header-inner::after {
+				content: '';
+				position: absolute;
+				inset-block-start: 100%;
+				inset-inline-start: 0;
+				width: calc(var(--sl-sidebar-width) - 2 * var(--sl-nav-pad-x));
+				height: 1px;
+				background-color: var(--vp-c-divider);
+			}
+			.sidebar-pane {
+				/* Make the sidebar visible on larger screens instead of deferring to popover state. */
+				display: block;
+				width: calc(var(--vp-band-extra) + var(--sl-sidebar-width));
+				padding-inline: calc(var(--vp-band-extra) + var(--sl-sidebar-pad-x))
+					var(--sl-sidebar-pad-x);
+			}
+			.sidebar-content {
+				padding-inline: 0;
+			}
+			.main-frame {
+				padding-inline-start: calc(var(--vp-band-extra) + var(--sl-content-inline-start, 0rem));
+			}
+		}
+	}
+</style>
