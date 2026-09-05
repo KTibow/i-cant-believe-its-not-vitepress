@@ -369,7 +369,12 @@
 	border-radius: 0.5rem;
 	padding: 1rem;
 	line-height: 1.7142857;
-	color: var(--vp-c-text-2);
+	/*
+	 * VitePress sets every variant's text to `--vp-c-text-1`; the muted grey on
+	 * its base `.custom-block` rule is never what you actually see. The title is
+	 * untinted there too — it is only `font-weight: 600` over the same colour.
+	 */
+	color: var(--vp-c-text-1);
 	background-color: var(--vp-c-default-soft);
 }
 .starlight-aside--tip {
@@ -599,4 +604,50 @@ main > .content-panel:first-of-type {
 	border-color: var(--vp-c-divider);
 	background-color: var(--vp-c-bg-elv);
 	box-shadow: var(--vp-shadow-3);
+}
+
+/* ---------------------------------------------------------------------------
+ * 10. Splash-page hero.
+ *
+ * `--sl-line-height-headings` is tuned for headings at body scale; at 56px it
+ * is far too loose. Starlight's hero h1 sizes itself from `--sl-text-3xl` and
+ * `--sl-text-6xl` and takes its leading from `--sl-line-height-headings` — and
+ * nothing else in Starlight reads any of the three — so scoping them to the
+ * hero retunes it without restating the clamp. Weight and tracking have no
+ * tokens, so those stay as declarations.
+ * ------------------------------------------------------------------------ */
+
+.hero {
+	--sl-text-3xl: 2rem;
+	--sl-text-6xl: 3.5rem;
+	--sl-line-height-headings: 1.25;
+}
+
+.hero h1 {
+	font-weight: 700;
+	letter-spacing: -0.025rem;
+}
+
+.hero .tagline {
+	line-height: 1.5555556;
+	font-weight: 500;
+	color: var(--vp-c-text-2);
+}
+
+/*
+ * Primary buttons. Starlight fills them with `--sl-color-text-accent` (the link
+ * colour) and sets the label to the page background; VitePress fills with the
+ * solid brand step and puts white on top. These are declarations rather than
+ * token overrides because the tokens involved would have to be given meanings
+ * they do not have — `--sl-color-black` is the page background, not a label.
+ */
+.sl-link-button.primary {
+	background: var(--vp-c-brand-3);
+	border-color: var(--vp-c-brand-3);
+	color: #fff;
+}
+.sl-link-button.primary:hover {
+	background: var(--vp-c-brand-2);
+	border-color: var(--vp-c-brand-2);
+	color: #fff;
 }
