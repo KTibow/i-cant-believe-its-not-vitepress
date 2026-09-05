@@ -52,6 +52,6 @@ room to breathe.
 
 ## Next
 
-- [Configuration](/reference/configuration/) — every option in detail.
-- [Styling](/reference/styling/) — the custom properties to reach for when you want a different
+- [Configuration](../../reference/configuration/) — every option in detail.
+- [Styling](../../reference/styling/) — the custom properties to reach for when you want a different
   accent colour or a wider content column.

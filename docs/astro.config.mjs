@@ -5,7 +5,8 @@ import vitepress from 'i-cant-believe-its-not-vitepress';
 import pageActions from 'starlight-page-actions';
 
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://ktibow.github.io',
+	base: '/i-cant-believe-its-not-vitepress/',
 	integrations: [
 		starlight({
 			title: "I Can't Believe It's Not VitePress",
@@ -19,7 +20,7 @@ export default defineConfig({
 				 * sure the buttons look native. See the styling reference.
 				 */
 				pageActions({
-					baseUrl: 'https://example.com',
+					baseUrl: 'https://ktibow.github.io/i-cant-believe-its-not-vitepress',
 					position: 'page-title',
 					actions: { markdown: true, chatgpt: true, claude: true },
 					share: false,
