@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node llms.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
