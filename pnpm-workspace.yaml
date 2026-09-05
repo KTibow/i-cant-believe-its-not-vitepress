@@ -2,10 +2,7 @@ packages:
   - 'packages/*'
   - 'docs'
 
+# pnpm 11 spelling; `onlyBuiltDependencies` is silently ignored.
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
+  esbuild: true
+  sharp: true
